@@ -1,16 +1,20 @@
-Top level
+# Table Schemas
 
-| variable         | options                                                                   |
-|:-----------------|:--------------------------------------------------------------------------|
-| stats_by_quarter | offense, defense                                                          |
-| quarter          | 1, 2, 3, 4                                                                |
-| down             | 1, 2, 3, 4                                                                |
-| distance         | one, short, medium, long, very_long                                       |
-| formation        | shotgun, under_center                                                     |
-| tempo            | huddle, no_huddle                                                         |
-| play_type        | pass, run                                                                 |
-| pass_type        | short_left, short_middle, short_right, deep_left, deep_middle, deep_right |
-| run_type         | left_tackle, left_guard, center, right_guard, right_tackle                |
+## Team stats (offense, defense) by down
+
+_New table will be created for each year_
+
+| variable      | options                                                                   |
+|:--------------|:--------------------------------------------------------------------------|
+| stats_by_down | offense, defense                                                          |
+| quarter       | 1, 2, 3, 4                                                                |
+| down          | 1, 2, 3, 4                                                                |
+| distance      | one, short, medium, long, very_long                                       |
+| formation     | shotgun, under_center                                                     |
+| tempo         | huddle, no_huddle                                                         |
+| play_type     | pass, run                                                                 |
+| pass_type     | short_left, short_middle, short_right, deep_left, deep_middle, deep_right |
+| run_type      | left_tackle, left_guard, center, right_guard, right_tackle                |
 
 | distance  | yardage |
 |:----------|:--------|
@@ -55,51 +59,47 @@ Top level
 ```json
 {
   "team_id": "TEAM",
-  "stats_by_quarter": {
+  "stats_by_down": {
     "offense": {
-      "quarter": {
+      "down": {
         "1": {
-          "down": {
-            "1": {
-              "distance": {
-                "short": {
-                  "formation": {
-                    "shotgun": {
-                      "no_huddle": {
-                        "pass": {
-                          "short_right": {
-                            "total_yards": 456,
-                            "avg_yards": 4.3,
-                            "attempts": 45,
-                            "completions": 31,
-                            "completion_pct": 0.71,
-                            "total_touchdowns": 4,
-                            "avg_touchdowns": 0.2,
-                            "avg_field_pos": 37,
-                            "total_explosive_plays": 5,
-                            "avg_explosive_plays": 0.29,
-                            "total_interceptions": 6,
-                            "avg_interceptions": 0.14,
-                            "total_sacks": 7,
-                            "avg_sacks": 0.09,
-                            "total_fumbles": 3,
-                            "avg_fumbles": 0.09
-                          }
-                        },
-                        "rush": {
-                          "left_tackle": {
-                            "total_yards": 678,
-                            "avg_yards": 34.1,
-                            "attempts": 329,
-                            "total_touchdowns": 7,
-                            "avg_touchdowns": 0.4,
-                            "avg_field_pos": 52,
-                            "total_explosive_plays": 4,
-                            "avg_explosive_plays": 0.87,
-                            "total_fumbles": 3,
-                            "avg_fumbles": 0.31
-                          }
-                        }
+          "distance": {
+            "short": {
+              "formation": {
+                "shotgun": {
+                  "no_huddle": {
+                    "pass": {
+                      "short_right": {
+                        "total_yards": 456,
+                        "avg_yards": 4.3,
+                        "attempts": 45,
+                        "completions": 31,
+                        "completion_pct": 0.71,
+                        "total_touchdowns": 4,
+                        "avg_touchdowns": 0.2,
+                        "avg_field_pos": 37,
+                        "total_explosive_plays": 5,
+                        "avg_explosive_plays": 0.29,
+                        "total_interceptions": 6,
+                        "avg_interceptions": 0.14,
+                        "total_sacks": 7,
+                        "avg_sacks": 0.09,
+                        "total_fumbles": 3,
+                        "avg_fumbles": 0.09
+                      }
+                    },
+                    "rush": {
+                      "left_tackle": {
+                        "total_yards": 678,
+                        "avg_yards": 34.1,
+                        "attempts": 329,
+                        "total_touchdowns": 7,
+                        "avg_touchdowns": 0.4,
+                        "avg_field_pos": 52,
+                        "total_explosive_plays": 4,
+                        "avg_explosive_plays": 0.87,
+                        "total_fumbles": 3,
+                        "avg_fumbles": 0.31
                       }
                     }
                   }
@@ -114,50 +114,16 @@ Top level
 }
 ```
 
+## Game IDs
 
+_New table will be created for each year_
 
-DB entry:
 ```json
 {
-  "team_id": "DET",
-  "aggregate_stats_by_quarter": [
-    {
-      // Quarter objcect
-    }
-  ]
-
-}
-```
-
-Quarter:
-```json
-{
-  "quarter": 1,
-  "aggregate_stats_by_down": [
-    {
-      // Down object
-    }
-  ]
-}
-```
-
-Down:
-```json
-{
-  "down": 1,
-  "aggregate_stats_by_distance": [
-    {
-      // Distance object
-    }
-  ]
-}
-```
-
-Distance:
-```json
-{
-  "distance": "short",
-  
+  "game_id": "game_id",
+  "week": 4,
+  "year": 2021,
+  "status": "NOT_STARTED | IN_PROGRESS | COMPLETED"
 }
 ```
 
