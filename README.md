@@ -11,14 +11,20 @@
 ## Systems
 
 * Handler for game stats calculator
-  * Call ESPN API, update `game_ids_[YEAR]` table with new games 
-  * For all `teamIds`, given a `week` and `year`, call the game stats aggregator
+  * Call ESPN API, update `game_ids_[YEAR]` table with new games
+  * For all `teamIds`, given a `week` and `year`
+  * Lambda with API gateway
+
+* Handler for game aggregator
+  * For a set of `gameIds`, call the aggregator lambda in parallel
+  * Lambda with API gateway
 
 * For a given `gameId` calculate aggregate offensive and defensive stats
   * Call ESPN API, add full json to S3 
   * Add all stats to the `team_off_stats_by_down_[YEAR]` or `team_def_stats_by_down_[YEAR]` table
   * Mark the `gameId` as completed in the `game_ids_[YEAR]` table
   * Called one or many times by the handler
+    * Lambda, called by handler in parallel
 
 ## Desired functionality
 
