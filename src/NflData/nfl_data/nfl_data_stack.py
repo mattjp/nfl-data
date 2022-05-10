@@ -4,6 +4,7 @@ from aws_cdk import (
     # aws_sqs as sqs,
 )
 from constructs import Construct
+from . import games_lambda
 
 class NflDataStack(Stack):
 
@@ -17,3 +18,5 @@ class NflDataStack(Stack):
         #     self, "NflDataQueue",
         #     visibility_timeout=Duration.seconds(300),
         # )
+
+        games_lambda.GamesLambda(self, "NflGamesLambda")
