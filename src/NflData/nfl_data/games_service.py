@@ -1,13 +1,14 @@
 import aws_cdk as cdk
 from constructs import Construct
 
-class GamesLambda(Construct):
+
+class GamesService(Construct):
     def __init__(self, scope: Construct, id: str):
         super().__init__(scope, id)
 
         handler = cdk.aws_lambda.Function(
             self,
-            "GamesLambdaHandler",
+            "GamesHandler",
             runtime=cdk.aws_lambda.Runtime.PYTHON_3_9,
             code=cdk.aws_lambda.Code.from_asset("resources"),
             handler="games.games_handler"
@@ -15,8 +16,8 @@ class GamesLambda(Construct):
 
         api = cdk.aws_apigateway.RestApi(
             self,
-            "games-api",
-            rest_api_name="Games Service",
+            "GamesApi",
+            rest_api_name="NFL Data Games Service",
             description="This service will get NFL game ids for a range of weeks in a given year."
         )
 
