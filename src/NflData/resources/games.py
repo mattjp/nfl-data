@@ -5,7 +5,7 @@ import constants
 
 # ALL_TEAM_IDS = range(1, )
 
-def validate(event) -> tuple[bool, str]:
+def validate(event):
     # TODO: add more validation
     if 'year' not in event:
         return False, 'Input must contain \'year\''
@@ -16,7 +16,7 @@ def validate(event) -> tuple[bool, str]:
     return True, ''
 
 
-def get_team_ids(event) -> list[int]:
+def get_team_ids(event):
     if 'team_id' in event:
         return [event['team_id']]
     else:
@@ -29,7 +29,7 @@ def games_handler(event, context):
       "year": 2021,
       "team_id": 2, // optional, do all Ids if not present
       "week_start": 0,
-      "week_end": 18
+      "week_end": 21
     }
     """
 
@@ -47,11 +47,14 @@ def games_handler(event, context):
             'body': json.dumps(err_msg)
         }
 
+    print('hen heckin low')
+
     team_ids = get_team_ids(event)
     for team_id in team_ids:
         url = constants.GAMES_URL.format(team_id=team_id)
         print(url)
-        # requests.get(url)
+        response = requests.get(url).json()
+        print(response)
 
 
 

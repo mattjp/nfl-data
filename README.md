@@ -1,5 +1,25 @@
 # NFL Data API
 
+## Running `games` API
+
+0. Move to the source directory
+
+```
+cd src/NflData/
+```
+
+2. Build the Lambda
+
+```
+% cdk synth
+```
+
+2. Test locally
+
+```
+% sam local invoke -e tests/games_event.json -t ./cdk.out/NflDataStack.template.json GamesHandler
+```
+
 ## Initial Functionality
 
 * For each team (offense/defense), aggregate stats by down.
@@ -31,6 +51,10 @@
 * Group stats by opponent
 * Stats by player
 
+
+## Other notes
+
+* For some reason, the `requests` library only works with Python 3.7, not 3.9
 
 
 

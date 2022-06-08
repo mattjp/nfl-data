@@ -9,7 +9,7 @@ class GamesService(Construct):
         handler = cdk.aws_lambda.Function(
             self,
             "GamesHandler",
-            runtime=cdk.aws_lambda.Runtime.PYTHON_3_9,
+            runtime=cdk.aws_lambda.Runtime.PYTHON_3_7,
             code=cdk.aws_lambda.Code.from_asset("resources"),
             handler="games.games_handler"
         )
