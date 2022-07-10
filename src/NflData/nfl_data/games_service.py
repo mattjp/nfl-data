@@ -11,7 +11,8 @@ class GamesService(Construct):
             "GamesHandler",
             runtime=cdk.aws_lambda.Runtime.PYTHON_3_7,
             code=cdk.aws_lambda.Code.from_asset("resources"),
-            handler="games.games_handler"
+            handler="games.games_handler",
+            timeout=cdk.Duration.minutes(60)  # Enough time to calculate entire season for all teams
         )
 
         api = cdk.aws_apigateway.RestApi(

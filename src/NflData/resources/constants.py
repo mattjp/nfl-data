@@ -1,5 +1,6 @@
 from team import Team
 
+# Teams
 ALL_TEAM_IDS = {
     1: Team('Atlanta', 'Falcons', 'ATL'),
     2: Team('Buffalo', 'Bills', 'BUF'),
@@ -35,4 +36,11 @@ ALL_TEAM_IDS = {
     34: Team('Houston', 'Texans', 'HOU')
 }
 
-GAMES_URL = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/{team_id}/events'
+# Urls
+EVENTS_URL = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/{team_id}/events'
+
+# Season types
+PRE_SEASON_ID = "1"
+REG_SEASON_ID = "2"
+POST_SEASON_ID = "3"
+

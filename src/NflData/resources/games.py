@@ -1,9 +1,12 @@
+import boto3
 import json
 import requests
 import constants
+import time
 
 
-# ALL_TEAM_IDS = range(1, )
+dyanmodb = boto3.resource('dynamodb', region_name='us-east-2')
+games_table = dyanmodb.Table('nfl_data_game_ids')
 
 def validate(event):
     # TODO: add more validation
@@ -23,6 +26,23 @@ def get_team_ids(event):
         return constants.ALL_TEAM_IDS.keys()
 
 
+def get_season_type(season_type_url):
+    return season_type_url.split("?", 1)[0][-1]
+
+
+def filter_existing_game_ids(game_ids, year):
+    request_items = {
+        games_table.name: {
+            'Keys': [{'game_id': game_id, 'year': year} for game_id in game_ids]
+        }
+    }
+
+    response = dyanmodb.batch_get_item(RequestItems=request_items)
+    print(response)
+
+# def write_game_ids(game_ids):
+
+
 def games_handler(event, context):
     """
     event = {
@@ -32,6 +52,7 @@ def games_handler(event, context):
       "week_end": 21
     }
     """
+    print("RUNNING GAMES HANDLER...")
 
     # https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/2/events
     # YEAR, TEAM_ID, WEEK_START, WEEK_END
@@ -47,14 +68,43 @@ def games_handler(event, context):
             'body': json.dumps(err_msg)
         }
 
-    print('hen heckin low')
-
     team_ids = get_team_ids(event)
+    year = int(event['year'])
     for team_id in team_ids:
-        url = constants.GAMES_URL.format(team_id=team_id)
-        print(url)
-        response = requests.get(url).json()
-        print(response)
+        events_url = constants.EVENTS_URL.format(team_id=team_id)
+        print(events_url)
+        events_response = requests.get(events_url).json()
+        # print(events_response)
+
+        events_items = events_response['items']
+        # print(events_items)
+
+        item_urls = list(map(lambda item: item['$ref'], events_items))
+        # print(item_urls)
+
+        # TODO: Commenting out to save time
+        # game_ids = []
+        # for item_url in item_urls:
+        #     print(item_url)
+        #     time.sleep(2)
+        #     item_response = requests.get(item_url).json()
+        #     season_type_url = item_response['seasonType']['$ref']
+        #     season_type_id = get_season_type(season_type_url)
+        #     if season_type_id == constants.REG_SEASON_ID:
+        #         game_id = item_response['id']
+        #         game_ids.append(game_id)
+        # print(game_ids)
+
+        game_ids = ['401326323', '401326129', '401326365', '401326382', '401326405', '401326413', '401326433', '401326439', '401326464', '401326482', '401326494', '401326511', '401326535', '401326552', '401326564', '401326570', '401326593']
+
+        # Add the game_id to the database, if it is not already present.
+        new_game_ids = filter_existing_game_ids(game_ids, year)
+        # write_game_ids(new_game_ids)
+
+
+
+
+
 
 
 
