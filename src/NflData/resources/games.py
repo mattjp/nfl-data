@@ -38,7 +38,10 @@ def filter_existing_game_ids(game_ids, year):
     }
 
     response = dyanmodb.batch_get_item(RequestItems=request_items)
-    print(response)
+    items = response['Responses']['nfl_data_game_ids']
+    existing_game_ids = list(map(lambda i: i['game_id'], items))
+
+    return list(set(game_ids) - set(existing_game_ids))
 
 # def write_game_ids(game_ids):
 
@@ -99,6 +102,7 @@ def games_handler(event, context):
 
         # Add the game_id to the database, if it is not already present.
         new_game_ids = filter_existing_game_ids(game_ids, year)
+        print(new_game_ids)
         # write_game_ids(new_game_ids)
 
 
