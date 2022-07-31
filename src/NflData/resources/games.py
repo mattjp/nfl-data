@@ -12,7 +12,7 @@ games_table = dynamodb.Table('nfl_data_game_ids')
 def validate(event):
     # TODO: add more validation
     if 'year' not in event:
-        return False, 'Input must contain \'year\''
+        return False, f'Input must contain \'year\', event={event}'
     if 'week_start' not in event:
         return False, 'Input must contain \'week_start\''
     if 'week_end' not in event:
@@ -74,6 +74,7 @@ def games_handler(event, context):
     # 1. call API
     # 2. update table with new game Ids
 
+    event = json.loads(event['body'])
     valid, err_msg = validate(event)
     if not valid:
         return {
