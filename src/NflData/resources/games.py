@@ -5,8 +5,9 @@ import constants
 import time
 
 
-dyanmodb = boto3.resource('dynamodb', region_name='us-east-2')
-games_table = dyanmodb.Table('nfl_data_game_ids')
+dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
+games_table = dynamodb.Table('nfl_data_game_ids')
+
 
 def validate(event):
     # TODO: add more validation
@@ -37,13 +38,22 @@ def filter_existing_game_ids(game_ids, year):
         }
     }
 
-    response = dyanmodb.batch_get_item(RequestItems=request_items)
+    response = dynamodb.batch_get_item(RequestItems=request_items)
     items = response['Responses']['nfl_data_game_ids']
     existing_game_ids = list(map(lambda i: i['game_id'], items))
 
     return list(set(game_ids) - set(existing_game_ids))
 
-# def write_game_ids(game_ids):
+
+def write_game_ids(game_ids, year):
+    with games_table.batch_writer() as writer:
+        for game_id in game_ids:
+            item = {
+                'game_id': game_id,
+                'year': year,
+                'status': 'UNPROCESSED'
+            }
+            writer.put_item(Item=item)
 
 
 def games_handler(event, context):
@@ -86,34 +96,33 @@ def games_handler(event, context):
         # print(item_urls)
 
         # TODO: Commenting out to save time
-        # game_ids = []
-        # for item_url in item_urls:
-        #     print(item_url)
-        #     time.sleep(2)
-        #     item_response = requests.get(item_url).json()
-        #     season_type_url = item_response['seasonType']['$ref']
-        #     season_type_id = get_season_type(season_type_url)
-        #     if season_type_id == constants.REG_SEASON_ID:
-        #         game_id = item_response['id']
-        #         game_ids.append(game_id)
+        game_ids = []
+        for item_url in item_urls:
+            print(item_url)
+            time.sleep(2)
+            item_response = requests.get(item_url).json()
+            season_type_url = item_response['seasonType']['$ref']
+            season_type_id = get_season_type(season_type_url)
+            if season_type_id == constants.REG_SEASON_ID:
+                game_id = item_response['id']
+                game_ids.append(game_id)
         # print(game_ids)
 
-        game_ids = ['401326323', '401326129', '401326365', '401326382', '401326405', '401326413', '401326433', '401326439', '401326464', '401326482', '401326494', '401326511', '401326535', '401326552', '401326564', '401326570', '401326593']
+        # TODO - need the week
+        #        no we don't if we're marking games as processed in the table
+
+        # game_ids = ['401326323', '401326129', '401326365', '401326382', '401326405', '401326413', '401326433',
+        #             '401326439', '401326464', '401326482', '401326494', '401326511', '401326535', '401326552',
+        #             '401326564', '401326570', '401326593']
 
         # Add the game_id to the database, if it is not already present.
         new_game_ids = filter_existing_game_ids(game_ids, year)
         print(new_game_ids)
-        # write_game_ids(new_game_ids)
 
-
-
-
-
-
-
+        write_game_ids(new_game_ids, year)
 
     # TODO - implement
     return {
         'statusCode': 200,
-        'body': json.dumps('Games handler running!')
+        'body': json.dumps('Games handler run successfully!')
     }
