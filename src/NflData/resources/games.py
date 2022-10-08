@@ -123,6 +123,7 @@ def games_handler(event, context):
         write_game_ids(new_game_ids, year)
 
     # TODO - implement
+    #   whoops, still no implementation
     return {
         'statusCode': 200,
         'body': json.dumps('Games handler run successfully!')

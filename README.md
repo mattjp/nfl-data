@@ -20,6 +20,12 @@ cd src/NflData/
 % sam local invoke -e tests/games_event.json -t ./cdk.out/NflDataStack.template.json GamesHandler
 ```
 
+3. Invoke Lambda
+
+```
+curl -X POST -d @tests/event.json -m 900 https://h2pon94e3a.execute-api.us-east-2.amazonaws.com/prod/games
+```
+
 ## Initial Functionality
 
 * For each team (offense/defense), aggregate stats by down.

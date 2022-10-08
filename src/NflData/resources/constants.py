@@ -40,7 +40,6 @@ ALL_TEAM_IDS = {
 EVENTS_URL = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/{team_id}/events'
 
 # Season types
-PRE_SEASON_ID = "1"
-REG_SEASON_ID = "2"
-POST_SEASON_ID = "3"
-
+PRE_SEASON_ID = '1'
+REG_SEASON_ID = '2'
+POST_SEASON_ID = '3'
