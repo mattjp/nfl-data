@@ -58,12 +58,13 @@ def write_game_ids(game_ids, year):
 
 def games_handler(event, context):
     """
-    event = {
-      "year": 2021,
-      "team_id": 2, // optional, do all Ids if not present
-      "week_start": 0,
-      "week_end": 21
-    }
+    :param event:
+        "body": {
+          "year": 2021,
+          "team_id": 2, // optional, do all Ids if not present
+          "week_start": 0,
+          "week_end": 21
+        }
     """
     print("RUNNING GAMES HANDLER...")
 
